@@ -45,6 +45,8 @@ public class Player : MonoBehaviour
     private Vector3 _direction = new Vector3(1,0,0);
 
     private int _score;
+
+    private Vector3 _currentStageScale;
 #endregion
 
 
@@ -86,18 +88,23 @@ public class Player : MonoBehaviour
             Head.transform.DOLocalMoveY(0.29f, 0.5f);
 
             m_currentStage.transform.DOLocalMoveY(0.25f, 0.2f);
-            m_currentStage.transform.DOScale(new Vector3(1, 0.5f, 1), 0.2f);
+            //not every stage's default scale is (1,0,5,1)
+            m_currentStage.transform.DOScale(_currentStageScale, 0.2f);
         }
 
         //按下空格键，小人身体进行缩放,盒子缩放--蓄力效果
         if(Input.GetKey(KeyCode.Space))
         {
-            Body.transform.localScale += new Vector3(1, -1, 1) * 0.05f * Time.deltaTime;
-            Head.transform.localPosition += new Vector3(0, -1, 0) * 0.1f * Time.deltaTime;
-
-            //盒子沿着轴心缩放
-            m_currentStage.transform.localScale += new Vector3(0, -1, 0) * 0.15f * Time.deltaTime;
-            m_currentStage.transform.localPosition += new Vector3(0, -1, 0) * 0.15f * Time.deltaTime;
+            float stageCollapseSpeed = 0.15f;
+            //别把盒子塌缩没了
+            if (m_currentStage.transform.localScale.y > 0.1f) {
+                Body.transform.localScale += Vector3.down * stageCollapseSpeed * Time.deltaTime*0.13f;
+                //Head.transform.localPosition += Vector3.down * 0.f * Time.deltaTime * 0.5f; Since you are using gravity, set the pos of player seems to be useless
+                //盒子沿着轴心缩放 如果你想让盒子严格沿底部为轴缩放，位移必须是缩放的一半。
+                m_currentStage.transform.localScale += Vector3.down * stageCollapseSpeed * Time.deltaTime;
+                m_currentStage.transform.localPosition += Vector3.down * stageCollapseSpeed * Time.deltaTime * 0.5f;
+            }
+           
 
             //预测小人运动轨迹
             PredictTrajectory();
@@ -118,8 +125,8 @@ public class Player : MonoBehaviour
         stage.transform.position = m_currentStage.transform.position + _direction * Random.Range(1.1f, Max_distance);
 
         var random_scale = Random.Range(0.5f, 1f);
-        stage.transform.localScale = new Vector3(random_scale, 0.5f, random_scale);
 
+        stage.transform.localScale = new Vector3(random_scale, 0.5f, random_scale);
         stage.GetComponent<Renderer>().material.color = new Color(Random.Range(0.01f, 1), Random.Range(0.01f, 1), Random.Range(0.01f, 1));
 
     }
@@ -130,7 +137,7 @@ public class Player : MonoBehaviour
         {
             m_lastCollisionCollider = collision.collider;
             m_currentStage = collision.gameObject;
-
+            _currentStageScale = collision.gameObject.transform.localScale;
             RandomDirection();
             SpawnStage();
 
@@ -139,7 +146,7 @@ public class Player : MonoBehaviour
             _score++;
             ScoreText.text = _score.ToString();
         }
-        if(collision.gameObject.name == "Ground")
+        if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")))
         {
             SceneManager.LoadScene("SampleScene");
         }
