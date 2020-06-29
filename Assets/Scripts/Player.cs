@@ -26,11 +26,11 @@ public class Player : MonoBehaviour
 
     public Transform Body;
 
-    public TextMeshProUGUI ScoreText;
     
-    private GameObject Particle;
+    
+    public GameObject Particle;
 
-    private Transform Stages;
+    //private Transform Stages;
 #endregion
 
 #region propertity
@@ -54,9 +54,12 @@ public class Player : MonoBehaviour
     private Vector3 _currentStageScale = new Vector3(1, 0.5f, 1);
     #endregion
 
-    void Awake() {
+    //场景初始化就调用
+    void Awake()
+    {
+        
         mainCamera = Camera.main.transform;
-        Stages = new GameObject("Stages").transform;
+        //Stages = new GameObject("Stages").transform;
     }
     void Start()
     {
@@ -64,9 +67,8 @@ public class Player : MonoBehaviour
 
         //修改物理组件的重心到body底部
         m_rigidBody.centerOfMass = Vector3.zero;
-        
+
         //找到游戏最开始的当前盒子
-        //Stage = GameObject.Find("Stage");
         m_currentStage = Stage;
         m_lastCollisionCollider = m_currentStage.GetComponent<Collider>();
 
@@ -74,7 +76,7 @@ public class Player : MonoBehaviour
 
         Camera_relative_position = mainCamera.position - transform.position;
 
-        Particle = GameObject.Find("Particle System");
+        //Particle = GameObject.Find("Particle System");
         Particle.SetActive(false);
     }
 
@@ -128,40 +130,44 @@ public class Player : MonoBehaviour
 
     void SpawnStage()
     {
-        var stage = Instantiate(Stage);
-        stage.transform.position = m_currentStage.transform.position + _direction * Random.Range(1.1f, Max_distance);
-
+        //取物体
+        var stage = ObjectPool.Instance.GetObject(Stage, m_currentStage.transform.position + _direction * Random.Range(1.1f, Max_distance), Quaternion.identity);
         var random_scale = Random.Range(0.5f, 1f);
-
         stage.transform.localScale = new Vector3(random_scale, 0.5f, random_scale);
         stage.GetComponent<Renderer>().material.color = new Color(Random.Range(0.01f, 1), Random.Range(0.01f, 1), Random.Range(0.01f, 1));
-        stage.transform.parent = Stages;
-        stage.name = "Stage" + _score.ToString();
+
+        //stage.transform.parent = Stages;
+        //stage.name = "Stage" + _score.ToString();
     }
+
 
     void OnCollisionEnter(Collision collision)
     {
         //I suppose that using name is a BAD idea, using tag or layer for instead
-        if(collision.gameObject.name.Contains("Stage") && collision.collider != m_lastCollisionCollider)
+        if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Stage")) && collision.collider != m_lastCollisionCollider)
         {
+            
             m_lastCollisionCollider = collision.collider;
             m_currentStage = collision.gameObject;
             _currentStageScale = collision.gameObject.transform.localScale;
+
+            GameManager.Instance.ShowScore();
+
             RandomDirection();
             SpawnStage();
-
             MoveCamera();
 
-            _score++;
-            ScoreText.text = _score.ToString();
-
             Particle.transform.position = Body.transform.position;
+
+            
         }
+
         if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")))
         {
             SceneManager.LoadScene("SampleScene");
         }
     }
+    
     void RandomDirection()
     {
         var seed = Random.Range(0, 2);
