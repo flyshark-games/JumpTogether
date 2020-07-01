@@ -94,8 +94,20 @@ public class Ground : MonoBehaviour
         //triangles[5] = 1;
 
         mesh.triangles = triangles;
-        //mesh.uv = new Vector2[] { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 0), new Vector2(1, 1) };
-
+        //for(int i=0;i<meshFilter.mesh.normals.Length;i++)
+        //{
+        //    Debug.Log(meshFilter.mesh.normals[i]);
+            
+        //}
         
+        //mesh.uv = new Vector2[] { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 0), new Vector2(1, 1) };
+        //meshFilter.mesh = mesh;
+        mesh.RecalculateNormals();
+        for (int i = 0; i < meshFilter.mesh.normals.Length; i++)
+        {
+            Debug.Log(meshFilter.mesh.normals[i]);
+
+        }
+
     }
 }

@@ -121,6 +121,14 @@ public class Player : MonoBehaviour
 
             
         }
+        DropOut();
+    }
+    void DropOut()
+    {
+        if(gameObject.transform.position.y < 0)
+        {
+            SceneManager.LoadScene("SampleScene");
+        }
     }
 
     void OnJump(float elapse)
@@ -162,12 +170,12 @@ public class Player : MonoBehaviour
             
         }
 
-        if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")))
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
+        //if(collision.gameObject.layer.Equals(LayerMask.NameToLayer("Ground")))
+        //{
+        //    SceneManager.LoadScene("SampleScene");
+        //}
     }
-    
+
     void RandomDirection()
     {
         var seed = Random.Range(0, 2);

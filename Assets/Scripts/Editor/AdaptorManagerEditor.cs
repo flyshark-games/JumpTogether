@@ -4,24 +4,16 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(AdaptorManager))]
+[ExecuteInEditMode]
 public class AdaptorManagerEditor : Editor
 {
+    void OnEnable()
+    {
+
+    }
     public override void OnInspectorGUI()
     {
-        
-        EditorGUILayout.BeginVertical();
-
-        EditorGUILayout.LabelField("以下内容不支持更改,仅支持更新显示：");
-        EditorGUILayout.LabelField("默认100px = 1unit");
-        EditorGUILayout.LabelField("如果摄像机支持的视野高度和屏幕高度对应的unit一致，说明该游戏在此屏幕设备上运行像素不会存在放大缩小问题");
-
-        EditorGUILayout.Space();
-
-
-        EditorGUILayout.EndVertical();
-
-
+        EditorGUILayout.LabelField("用于显示asset的相关参数，不支持修改,更改asset文件参数，该面板也随之更新");
         base.OnInspectorGUI();
-
     }
 }

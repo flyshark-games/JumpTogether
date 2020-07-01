@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     public GameObject Stage;
     public TextMeshProUGUI ScoreText;
 
+    [SerializeField]
+    private Camera cameraBackground;
+
     public int Score = 0;
 
     //单例模式
@@ -30,11 +33,22 @@ public class GameManager : MonoBehaviour
         //预热对象池
         ObjectPool.Instance.Preload(Stage, 10);
     }
-
+    void Update()
+    {
+        
+    }
     public void ShowScore()
     {
         Score++;
         ScoreText.text = Score.ToString();
+        if (Score > 0 && Score % 5 == 0)
+        {
+            cameraBackground.backgroundColor = new Color(Random.Range(0.1f, 1), Random.Range(0.1f, 1), Random.Range(0.1f, 1),1.0f);
+            
+        }
+        
     }
+    
+
     
 }
