@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        Debug.Log("Start");
+        Debug.Log("Start，预热对象池，初始化盒子10个");
         //预热对象池
         ObjectPool.Instance.Preload(Stage, 10);
     }

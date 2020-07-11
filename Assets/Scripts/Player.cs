@@ -127,7 +127,7 @@ public class Player : MonoBehaviour
     {
         if(gameObject.transform.position.y < 0)
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("3D");
         }
     }
 

@@ -17,6 +17,12 @@ public class PoolManagerEditor : Editor
     }
     public override void OnInspectorGUI()
     {
+        EditorGUILayout.BeginVertical();
+        GUILayout.FlexibleSpace();
+        EditorGUILayout.LabelField("对象池情况:");
+        EditorGUILayout.Space();
+        EditorGUILayout.EndVertical();
+
         base.OnInspectorGUI();
 
 
