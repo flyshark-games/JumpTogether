@@ -2,6 +2,7 @@
 
 A little jump game inspired by wechat to standardize cooperation, learn from each other
 
-![](./external/跳一跳2D架构.png)
+![跳一跳2D架构图](./external/跳一跳2D架构.png)
+
 
 [跳一跳2D架构思维导图](https://naotu.baidu.com/file/39a1b3511ea10d4bd2330258880bac2e)
