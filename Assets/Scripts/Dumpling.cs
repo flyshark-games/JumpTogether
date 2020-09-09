@@ -61,6 +61,7 @@ public class Dumpling : MonoBehaviour
     void Start()
     {
         m_rigidBody = GetComponent<Rigidbody2D>();
+
         //修改物理组件的重心到body底部
         m_rigidBody.centerOfMass = new Vector3(0,-0.5f,0);
 
