@@ -22,7 +22,7 @@ public class CreateAssetFile : Editor
         //把资源存放在Resources文件夹下
         string assetFilePath = Application.dataPath + "/Resources" + "/";
 
-        //如果项目中不含有该路径，创建爱你一个
+        //如果项目中不含有该路径，创建一个
         if(!Directory.Exists(assetFilePath))
         {
             Directory.CreateDirectory(assetFilePath);
